@@ -1,0 +1,17 @@
+{
+	"Type check Promise": {
+		"scope": "lua",
+		"prefix": [
+			"typecheck",
+			"tif",
+			"tpromise"
+		],
+		"description": "Creates a t type check statement that returns a Promise rejection if it fails.",
+		"body": [
+			"local TypeSuccess, TypeError = ${1:TypeCheckFunction}(${2:...})",
+			"if not TypeSuccess then",
+			"\treturn Promise.Reject(TypeError)",
+			"end",
+		]
+	}
+}
