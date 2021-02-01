@@ -1,6 +1,6 @@
 # QuentyDataStoreV2
 
-Uses Janitor instead of Maid and evaera's Promise instead of Quenty's.
+Uses Janitor instead of Maid and evaera's Promise instead of Quenty's. Better for standalone uses, which is why I ported it.
 
 ## Links
 
