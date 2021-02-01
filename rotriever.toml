@@ -1,0 +1,6 @@
+[package]
+name = "howmanysmall/QuentyDataStoreV2"
+version = "1.0.0"
+author = "Quenty"
+content_root = "src"
+license = "MIT"
