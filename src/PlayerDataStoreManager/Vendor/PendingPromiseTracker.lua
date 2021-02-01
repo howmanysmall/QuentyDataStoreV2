@@ -13,9 +13,9 @@ function PendingPromiseTracker.new()
 end
 
 function PendingPromiseTracker:Add(promise)
-	if promise:GetStatus() == Promise.Status.Started then
+	if promise:getStatus() == Promise.Status.Started then
 		self._pendingPromises[promise] = true
-		promise:Finally(function()
+		promise:finally(function()
 			self._pendingPromises[promise] = nil
 		end)
 	end

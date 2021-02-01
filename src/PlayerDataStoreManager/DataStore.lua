@@ -65,7 +65,7 @@ function DataStore:DidLoadFail(): boolean
 		return false
 	end
 
-	if self._loadPromise:GetStatus() == Promise.Status.Rejected then
+	if self._loadPromise:getStatus() == Promise.Status.Rejected then
 		return true
 	end
 
@@ -73,7 +73,7 @@ function DataStore:DidLoadFail(): boolean
 end
 
 function DataStore:PromiseLoadSuccessful()
-	return self._janitor:AddPromise(self:_promiseLoad()):Then(function()
+	return self._janitor:AddPromise(self:_promiseLoad()):andThen(function()
 		return true
 	end, function()
 		return false
@@ -84,7 +84,7 @@ end
 function DataStore:Save()
 	if self:DidLoadFail() then
 		warn("[DataStore.Save] - Not saving, failed to load")
-		return Promise.Reject("Load not successful, not saving")
+		return Promise.reject("Load not successful, not saving")
 	end
 
 	if not self:HasWritableData() then
@@ -93,7 +93,7 @@ function DataStore:Save()
 			print("[DataStore.Save] - Not saving, nothing staged")
 		end
 
-		return Promise.Resolve(nil)
+		return Promise.resolve(nil)
 	end
 
 	return self:_saveData(self:GetNewWriter())
@@ -101,7 +101,7 @@ end
 
 -- Loads data. This returns the originally loaded data.
 function DataStore:Load(keyName: string, defaultValue: any)
-	return self:_promiseLoad():Then(function(data)
+	return self:_promiseLoad():andThen(function(data)
 		return self:_afterLoadGetAndApplyStagedData(keyName, data, defaultValue)
 	end)
 end
@@ -111,7 +111,7 @@ function DataStore:_saveData(writer)
 	local promise
 	promise = Promise.new(function(resolve)
 		resolve(janitor:AddPromise(DataStorePromises.promiseUpdate(self._robloxDataStore, self._key, function(data)
-			if promise:GetStatus() == Promise.Status.Rejected then
+			if promise:getStatus() == Promise.Status.Rejected then
 				-- Cancel if we have another request
 				return nil
 			end
@@ -139,18 +139,18 @@ function DataStore:_promiseLoad()
 		return self._loadPromise
 	end
 
-	self._loadPromise = self._janitor:AddPromise(DataStorePromises.promiseGet(self._robloxDataStore, self._key):Then(function(data)
+	self._loadPromise = self._janitor:AddPromise(DataStorePromises.promiseGet(self._robloxDataStore, self._key):andThen(function(data)
 		if data == nil then
 			return {}
 		elseif type(data) == "table" then
 			return data
 		else
-			return Promise.Reject("Failed to load data. Wrong type '" .. type(data) .. "'")
+			return Promise.reject("Failed to load data. Wrong type '" .. type(data) .. "'")
 		end
 	end, function(err)
 		-- Log:
 		warn("[DataStore] - Failed to GetAsync data", err)
-		return Promise.Reject(err)
+		return Promise.reject(err)
 	end))
 
 	return self._loadPromise

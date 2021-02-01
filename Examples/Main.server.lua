@@ -26,12 +26,12 @@ local function loadStats(playerJanitor, mainStore)
 	moneyValue.Name = "Money"
 	moneyValue.Parent = leaderboard
 
-	playerJanitor:AddPromise(mainStore:Load("money", 0)):Then(function(money)
+	playerJanitor:AddPromise(mainStore:Load("money", 0)):andThen(function(money)
 		moneyValue.Value = money
 		playerJanitor:Add(mainStore:StoreOnValueChange("money", moneyValue), "Disconnect")
-	end):Catch(function(problem)
+	end):catch(function(problem)
 		warn("Failed to load", tostring(problem))
-	end):Finally(function()
+	end):finally(function()
 		moneyValue.Value += 10
 	end)
 

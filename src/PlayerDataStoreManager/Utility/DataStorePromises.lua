@@ -12,10 +12,10 @@ local promiseIncrementTuple = t.tuple(dataStoreInstance, t.string, t.optional(t.
 function DataStorePromises.promiseGet(dataStore: GlobalDataStore, key: string)
 	local typeSuccess, typeError = promiseGetTuple(dataStore, key)
 	if not typeSuccess then
-		return Promise.Reject(typeError)
+		return Promise.reject(typeError)
 	end
 
-	return Promise.Defer(function(resolve, reject)
+	return Promise.defer(function(resolve, reject)
 		local value
 		local success, getError = pcall(function()
 			value = dataStore:GetAsync(key)
@@ -32,10 +32,10 @@ end
 function DataStorePromises.promiseUpdate(dataStore: GlobalDataStore, key: string, updateFunction: (any) -> any)
 	local typeSuccess, typeError = promiseUpdateTuple(dataStore, key, updateFunction)
 	if not typeSuccess then
-		return Promise.Reject(typeError)
+		return Promise.reject(typeError)
 	end
 
-	return Promise.Defer(function(resolve, reject)
+	return Promise.defer(function(resolve, reject)
 		local value
 		local success, updateError = pcall(function()
 			value = {dataStore:UpdateAsync(key, updateFunction)}
@@ -56,10 +56,10 @@ end
 function DataStorePromises.promiseSet(dataStore: GlobalDataStore, key: string, value: any, userIds: {number}?, options: Instance?)
 	local typeSuccess, typeError = promiseSetTuple(dataStore, key, value, userIds, options)
 	if not typeSuccess then
-		return Promise.Reject(typeError)
+		return Promise.reject(typeError)
 	end
 
-	return Promise.Defer(function(resolve, reject)
+	return Promise.defer(function(resolve, reject)
 		local returnValues
 		local success, setError = pcall(function()
 			returnValues = dataStore:SetAsync(key, value, userIds, options)
@@ -76,10 +76,10 @@ end
 function DataStorePromises.promiseIncrement(dataStore: GlobalDataStore, key: string, delta: number?, userIds: {number}?, options: DataStoreSetOptions?)
 	local typeSuccess, typeError = promiseIncrementTuple(dataStore, key, delta, userIds, options)
 	if not typeSuccess then
-		return Promise.Reject(typeError)
+		return Promise.reject(typeError)
 	end
 
-	return Promise.Defer(function(resolve, reject)
+	return Promise.defer(function(resolve, reject)
 		local value
 		local success, incrementError = pcall(function()
 			value = dataStore:IncrementAsync(key, delta, userIds, options)
@@ -96,10 +96,10 @@ end
 function DataStorePromises.promiseRemove(dataStore: GlobalDataStore, key: string)
 	local typeSuccess, typeError = promiseGetTuple(dataStore, key)
 	if not typeSuccess then
-		return Promise.Reject(typeError)
+		return Promise.reject(typeError)
 	end
 
-	return Promise.Defer(function(resolve, reject)
+	return Promise.defer(function(resolve, reject)
 		local value
 		local success, removeError = pcall(function()
 			value = dataStore:RemoveAsync(key)

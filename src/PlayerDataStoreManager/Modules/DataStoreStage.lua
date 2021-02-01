@@ -60,13 +60,13 @@ function DataStoreStage:Load(name: string, defaultValue: any)
 
 	if self._dataToSave and self._dataToSave[name] ~= nil then
 		if self._dataToSave[name] == DataStoreDeleteToken then
-			return Promise.Resolve(defaultValue)
+			return Promise.resolve(defaultValue)
 		else
-			return Promise.Resolve(self._dataToSave[name])
+			return Promise.resolve(self._dataToSave[name])
 		end
 	end
 
-	return self._loadParent:Load(self._loadName, {}):Then(function(data)
+	return self._loadParent:Load(self._loadName, {}):andThen(function(data)
 		return self:_afterLoadGetAndApplyStagedData(name, data, defaultValue)
 	end)
 end
@@ -105,7 +105,7 @@ function DataStoreStage:Delete(name: string)
 end
 
 function DataStoreStage:Wipe()
-	return self._loadParent:Load(self._loadName, {}):Then(function(data)
+	return self._loadParent:Load(self._loadName, {}):andThen(function(data)
 		for key in pairs(data) do
 			if self._stores[key] then
 				self._stores[key]:Wipe()

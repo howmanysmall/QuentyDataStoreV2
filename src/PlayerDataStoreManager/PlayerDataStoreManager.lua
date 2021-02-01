@@ -48,7 +48,7 @@ function PlayerDataStoreManager.new(robloxDataStore: GlobalDataStore, keyGenerat
 			return
 		end
 
-		self:PromiseAllSaves():Wait()
+		self:PromiseAllSaves():await()
 	end)
 
 	return self
@@ -81,7 +81,7 @@ function PlayerDataStoreManager:RemovePlayerDataStore(player: Player)
 		func(player)
 	end
 
-	datastore:Save():Finally(function()
+	datastore:Save():finally(function()
 		datastore:Destroy()
 		self._removing[player] = nil
 	end)
@@ -110,7 +110,7 @@ function PlayerDataStoreManager:PromiseAllSaves()
 		self:RemovePlayerDataStore(player)
 	end
 
-	return self._janitor:AddPromise(Promise.All(self._pendingSaves:GetAll()))
+	return self._janitor:AddPromise(Promise.all(self._pendingSaves:GetAll()))
 end
 
 function PlayerDataStoreManager:Destroy()

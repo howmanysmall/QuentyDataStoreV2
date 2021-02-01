@@ -1,4 +1,4 @@
-src/DataStore/Vendor/Promise.lua
-src/DataStore/Vendor/Scheduler.lua
-src/DataStore/Vendor/t.lua
-src/DataStore/Utility/DataStorePromises.lua
+src/PlayerDataStoreManager/Vendor/Promise.lua
+src/PlayerDataStoreManager/Vendor/Scheduler.lua
+src/PlayerDataStoreManager/Vendor/t.lua
+src/PlayerDataStoreManager/Utility/DataStorePromises.lua

@@ -69,10 +69,10 @@ end
 	@returns [Promise]
 **--]]
 function Janitor.__index:AddPromise(PromiseObject)
-	if PromiseObject:GetStatus() == Promise.Status.Started then
+	if PromiseObject:getStatus() == Promise.Status.Started then
 		local Id = newproxy(false)
-		local NewPromise = self:Add(Promise.Resolve(PromiseObject), "Cancel", Id)
-		NewPromise:FinallyCall(self.Remove, self, Id)
+		local NewPromise = self:Add(Promise.resolve(PromiseObject), "cancel", Id)
+		NewPromise:finallyCall(self.Remove, self, Id)
 		return NewPromise
 	else
 		return PromiseObject
