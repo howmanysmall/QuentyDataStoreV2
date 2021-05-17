@@ -71,7 +71,7 @@ function DataStorePromises.promiseUpdate(dataStore: GlobalDataStore, key: string
 			if not value then
 				reject("Nothing was loaded.")
 			else
-				resolve(value)
+				resolve(table.unpack(value))
 			end
 		end
 	end)
